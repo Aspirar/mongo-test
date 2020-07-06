@@ -22,8 +22,9 @@ app.get('/health', (req, res) => res.end('healthy'));
 app.get('/test', async (req, res) => {
 	const posts = await db.collection('posts')
 		.find({})
+		.project({ _id: 1 })
 		.sort({ _id: -1 })
-		.limit(200)
+		.limit(1)
 		.toArray();
 	res.json(posts);
 });
