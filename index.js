@@ -5,7 +5,7 @@ let db;
 
 const connect = () => new Promise((resolve, reject) => {
 	if (db) return resolve(db)
-	const client = new MongoClient('mongodb://10.0.3.183:27017', { useNewUrlParser: true })
+	const client = new MongoClient('mongodb://11.0.1.139:27017', { useNewUrlParser: true })
 	client.connect((err) => {
 		if (err) return reject(err)
 		db = client.db('rumbl')
@@ -21,7 +21,7 @@ app.get('/health', (req, res) => res.end('healthy'));
 
 app.get('/test', async (req, res) => {
 	const posts = await db.collection('posts')
-		.find({})
+		.find({}, { readPreference: 'secondary' })
 		.project({ _id: 1 })
 		.sort({ _id: -1 })
 		.limit(1)
