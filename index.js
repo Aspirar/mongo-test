@@ -5,10 +5,10 @@ let db;
 
 const connect = () => new Promise((resolve, reject) => {
 	if (db) return resolve(db)
-	const client = new MongoClient('mongodb://localhost:27017', { useNewUrlParser: true })
+	const client = new MongoClient('mongodb://10.0.3.183:27017', { useNewUrlParser: true })
 	client.connect((err) => {
 		if (err) return reject(err)
-		db = client.db(process.env.DB_NAME)
+		db = client.db('rumbl')
 		resolve(db)
 	})
 })
