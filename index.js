@@ -1,4 +1,5 @@
 const express = require('express');
+const compression = require('compression');
 const { MongoClient } = require('mongodb')
 
 let db;
@@ -16,6 +17,8 @@ const connect = () => new Promise((resolve, reject) => {
 connect().then(() => 'Connected to mongodb')
 
 const app = express();
+
+app.use(compression());
 
 app.get('/health', (req, res) => res.end('healthy'));
 
