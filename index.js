@@ -11,7 +11,9 @@ const connect = () => new Promise((resolve, reject) => {
 	const client = new MongoClient('mongodb://mongo1.rizzle:27017,mongo2.rizzle:27017', {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
-		compression: ['zlib'],
+		compression: {
+			compressors: ['snappy']
+		}
 	})
 	client.connect((err) => {
 		if (err) return reject(err)
