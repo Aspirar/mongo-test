@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const compression = require('compression');
 const { MongoClient } = require('mongodb')
@@ -9,7 +11,8 @@ const connect = () => new Promise((resolve, reject) => {
 	const client = new MongoClient('mongodb://mongo1.rizzle:27017,mongo2.rizzle:27017', {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
-		compression: ['snappy']
+		compression: ['snappy'],
+		readPreferenceTags: [{ region: process.env.REGION }]
 	})
 	client.connect((err) => {
 		if (err) return reject(err)
