@@ -50,7 +50,7 @@ app.get('/write-ten', async (req, res) => {
 
 app.get('/read-one', async (req, res) => {
 	const docs = await db.collection('test_collection')
-		.find({}, { readPreference: 'secondaryPreferred' })
+		.find({}, { readPreference: 'secondaryPreferred', readPreferenceTags: [{ region: process.env.REGION }] })
 		.sort({ _id: -1 })
 		.limit(1)
 		.toArray();
