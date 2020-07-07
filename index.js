@@ -12,7 +12,6 @@ const connect = () => new Promise((resolve, reject) => {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 		compression: ['snappy'],
-		readPreferenceTags: [{ region: process.env.REGION }]
 	})
 	client.connect((err) => {
 		if (err) return reject(err)
@@ -62,6 +61,15 @@ app.get('/read-ten', async (req, res) => {
 		.find({}, { readPreference: 'secondaryPreferred', readPreferenceTags: [{ region: process.env.REGION }] })
 		.sort({ _id: -1 })
 		.limit(10)
+		.toArray();
+	res.json(docs);
+});
+
+app.get('/read-hundred-primary', async (req, res) => {
+	const docs = await db.collection('test_collection')
+		.find({})
+		.sort({ _id: -1 })
+		.limit(100)
 		.toArray();
 	res.json(docs);
 });
