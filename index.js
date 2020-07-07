@@ -47,6 +47,12 @@ app.get('/write-ten', async (req, res) => {
 	res.json({ success: true });
 });
 
+app.get('/write-thousand', async (req, res) => {
+	const docs = Array(1000).fill().map((val, index) => ({ test: index }))
+	await db.collection('test_collection').insertMany(docs);
+	res.json({ success: true });
+});
+
 app.get('/read-one', async (req, res) => {
 	const docs = await db.collection('test_collection')
 		.find({}, { readPreference: 'secondaryPreferred', readPreferenceTags: [{ region: process.env.REGION }] })
@@ -65,11 +71,29 @@ app.get('/read-ten', async (req, res) => {
 	res.json(docs);
 });
 
+app.get('/read-thousand', async (req, res) => {
+	const docs = await db.collection('test_collection')
+		.find({}, { readPreference: 'secondaryPreferred', readPreferenceTags: [{ region: process.env.REGION }] })
+		.sort({ _id: -1 })
+		.limit(1000)
+		.toArray();
+	res.json(docs);
+});
+
 app.get('/read-hundred-primary', async (req, res) => {
 	const docs = await db.collection('test_collection')
 		.find({})
 		.sort({ _id: -1 })
 		.limit(100)
+		.toArray();
+	res.json(docs);
+});
+
+app.get('/read-thousand-primary', async (req, res) => {
+	const docs = await db.collection('test_collection')
+		.find({})
+		.sort({ _id: -1 })
+		.limit(1000)
 		.toArray();
 	res.json(docs);
 });
