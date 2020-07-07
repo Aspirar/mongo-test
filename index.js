@@ -6,7 +6,7 @@ let db;
 
 const connect = () => new Promise((resolve, reject) => {
 	if (db) return resolve(db)
-	const client = new MongoClient('mongodb://localhost:27017', {
+	const client = new MongoClient('mongodb://mongo1.rizzle:27017,mongo2.rizzle:27017', {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 		compression: ['snappy']
