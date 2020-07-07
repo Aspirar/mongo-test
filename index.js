@@ -29,7 +29,7 @@ app.get('/health', (req, res) => res.end('healthy'));
 
 app.get('/test', async (req, res) => {
 	const posts = await db.collection('posts')
-		.find({}, { readPreference: 'secondaryPreferred' })
+		.find({}, { readPreference: 'secondaryPreferred', readPreferenceTags: [{ region: process.env.REGION }] })
 		.project()
 		.sort({ _id: -1 })
 		.limit(200)
@@ -59,7 +59,7 @@ app.get('/read-one', async (req, res) => {
 
 app.get('/read-ten', async (req, res) => {
 	const docs = await db.collection('test_collection')
-		.find({}, { readPreference: 'secondaryPreferred' })
+		.find({}, { readPreference: 'secondaryPreferred', readPreferenceTags: [{ region: process.env.REGION }] })
 		.sort({ _id: -1 })
 		.limit(10)
 		.toArray();
@@ -68,7 +68,7 @@ app.get('/read-ten', async (req, res) => {
 
 app.get('/update-two-read-ten', async ({ req, res }) => {
 	const docs = await db.collection('test_collection')
-		.find({}, { readPreference: 'secondaryPreferred' })
+		.find({}, { readPreference: 'secondaryPreferred', readPreferenceTags: [{ region: process.env.REGION }] })
 		.sort({ _id: -1 })
 		.limit(10)
 		.toArray();
@@ -85,7 +85,7 @@ app.get('/insert-two-read-ten', async ({ req, res }) => {
 	await db.collection('test_collection').insertMany(toInsert);
 
 	const docs = await db.collection('test_collection')
-		.find({}, { readPreference: 'secondaryPreferred' })
+		.find({}, { readPreference: 'secondaryPreferred', readPreferenceTags: [{ region: process.env.REGION }] })
 		.sort({ _id: -1 })
 		.limit(10)
 		.toArray();
