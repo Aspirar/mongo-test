@@ -29,7 +29,7 @@ app.get('/health', (req, res) => res.end('healthy'));
 
 app.get('/test', async (req, res) => {
 	const posts = await db.collection('posts')
-		.find({}, { readPreference: 'secondary' })
+		.find({}, { readPreference: 'secondaryPreferred' })
 		.project()
 		.sort({ _id: -1 })
 		.limit(200)
