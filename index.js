@@ -11,6 +11,7 @@ const client = new Client({
 		username: 'elastic',
 		password: 'test123',
 	},
+	compression:'gzip',
 })
 let db;
 
