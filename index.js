@@ -84,7 +84,7 @@ app.get('/read-hundred', async (req, res) => {
 
 app.get('/read-thousand', async (req, res) => {
 	const docs = await db.collection('test_collection')
-		.find({}, { readPreference: 'secondaryPreferred', readPreferenceTags: [{ region: process.env.REGION }] })
+		.find({})
 		.sort({ _id: -1 })
 		.limit(1000)
 		.toArray();
@@ -93,7 +93,7 @@ app.get('/read-thousand', async (req, res) => {
 
 app.get('/read-ten-thousand', async (req, res) => {
 	const docs = await db.collection('test_collection')
-		.find({}, { readPreference: 'secondaryPreferred', readPreferenceTags: [{ region: process.env.REGION }] })
+		.find({})
 		.sort({ _id: -1 })
 		.limit(10000)
 		.toArray();
