@@ -176,7 +176,7 @@ app.get('/es/write', async (req,res)=>{
 		bio: faker.lorem.sentence(),
 		image: faker.image.avatar()
 	}
-	await client.create({
+	await client.index({
 		index: 'test-index',
 		body: msg,
 	})
