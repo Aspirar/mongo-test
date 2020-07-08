@@ -178,7 +178,6 @@ app.get('/es/write', async (req,res)=>{
 	}
 	await client.create({
 		index: 'test-index',
-		id: key,
 		body: msg,
 	})
 	res.json({success:true})
