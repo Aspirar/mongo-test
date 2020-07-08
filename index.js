@@ -1,9 +1,17 @@
 require('dotenv').config();
-
+const faker=require('faker')
 const express = require('express');
 const compression = require('compression');
 const { MongoClient } = require('mongodb')
+const { Client } = require('@elastic/elasticsearch')
 
+const client = new Client({
+	node: ['http://mongo1.rizzle:9200'],
+	auth: {
+		username: 'elastic',
+		password: 'test123',
+	},
+})
 let db;
 
 const connect = () => new Promise((resolve, reject) => {
@@ -144,6 +152,37 @@ app.get('/insert-two-read-ten', async ({ req, res }) => {
 
 	res.json(docs);
 });
+
+
+app.get('/es/read',async (req,res)=>{
+	let data=await client.search({
+		index: 'test-index',
+		size: 100,
+		body: {
+			query: {
+				"match_all": {}
+			}
+		}
+	})
+	res.json(data)
+})
+
+app.get('/es/write', async (req,res)=>{
+
+	let msg={
+		name: faker.name.findName(),
+		email: faker.internet.email(),
+		address: faker.address.streetAddress(),
+		bio: faker.lorem.sentence(),
+		image: faker.image.avatar()
+	}
+	await client.create({
+		index: 'test-index',
+		id: key,
+		body: msg,
+	})
+	res.json({success:true})
+})
 
 app.listen(5000, () => {
 	console.log('App Listening');
